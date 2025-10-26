@@ -1,0 +1,50 @@
+name: Lint and Auto-Fix dbt Project
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+
+permissions:
+  contents: write
+
+jobs:
+  lint_and_fix_project:
+    name: Run SQLFluff Linter and Auto-Fix
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Required for committing back changes
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install SQLFluff
+        run: |
+          python -m pip install --upgrade pip
+          pip install sqlfluff
+
+      - name: Auto-fix SQLFluff issues
+        run: |
+          sqlfluff fix models --dialect snowflake --force
+
+      - name: Run SQLFluff lint
+        run: |
+          sqlfluff lint models --dialect snowflake
+
+      - name: Commit and push fixes (if any)
+        run: |
+          if [[ `git status --porcelain` ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "🤖 SQLFluff auto-fixes"
+            git push
+          else
+            echo "No fixes to commit."
+          fi

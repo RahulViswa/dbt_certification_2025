@@ -35,9 +35,24 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_certification_2025:
     staging:
-      +materialized: view
+      +database: "{{ env_var('DBT_STAGE') }}"
+      +materialized: 'table'
+      jaffle_shop:
+        +schema: jaffle_shop
+      stripe:
+        +schema: stripe
 
     marts:
-      +materialized: table
+      +database: "{{ env_var('DBT_ANALYTICS') }}"
+      +materialized: 'table'
+      finance:
+        +schema: finance
+      marketing:
+        +schema: marketing
+
+seeds:
+  +database: "{{ env_var('DBT_STAGE') }}"
+  +schema: misc
+    
 flags:
   require_generic_test_arguments_property: true

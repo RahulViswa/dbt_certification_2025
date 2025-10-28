@@ -1,0 +1,11 @@
+{
+    "dbt.environmentVariables": {
+        "DBT_RAW": "RAW",
+        "DBT_STAGE": "STAGE",
+        "DBT_ANALYTICS": "ANALYTICS",
+        "DBT_CI": "SANDBOX_CI"
+    },
+    "cSpell.words": [
+        "jaffle"
+    ]
+}

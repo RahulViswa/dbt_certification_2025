@@ -49,10 +49,17 @@ models:
         +schema: finance
       marketing:
         +schema: marketing
+    
+  dbt_project_evaluator:
+    +enabled: "{{ var('run_evaluator', 'false') | lower == 'true' | as_bool }}"
+    +schema: dbt_project_evaluator
 
 seeds:
   +database: "{{ env_var('DBT_STAGE') }}"
   +schema: misc
+  dbt_project_evaluator:
+    dbt_project_evaluator_exceptions:
+      +enabled: false
     
 flags:
   require_generic_test_arguments_property: true

@@ -1,3 +1,4 @@
 # .sqlfluffignore
 
 models/legacy/customer_orders.sql
+models/legacy/exemplar_customer_orders.sql

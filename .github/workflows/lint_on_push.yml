@@ -42,23 +42,27 @@ jobs:
           echo "🔍 Running SQLFluff Lint..."
           sqlfluff lint models --dialect snowflake --format human > lint_output.txt || true
 
+          echo ""
           echo "=============================="
           echo "✅ SQLFluff Lint Summary"
           echo "=============================="
-          grep -E "^== " lint_output.txt | sed 's/^/📄 /'
+          grep -E "^== " lint_output.txt | sed 's/^/📄 /' || true
+
+          echo ""
           echo "------------------------------"
           echo "⚠️  Unfixable Violations"
           echo "------------------------------"
 
-          if grep -q "FAIL" lint_output.txt; then
-            grep "FAIL" lint_output.txt
+          # Show detailed unfixable violations
+          if grep -q "L:" lint_output.txt; then
+            grep -E "L:[0-9]+ *|L[0-9]+" lint_output.txt | sed 's/^/❌ /'
             echo "has_unfixable=true" >> $GITHUB_ENV
           else
-            echo "No unfixable violations found 🎉"
+            echo "🎉 No unfixable violations found!"
             echo "has_unfixable=false" >> $GITHUB_ENV
           fi
 
-      - name: Commit and push fixes (if any)
+      - name: Commit and push fixes
         if: env.has_unfixable == 'false'
         run: |
           if [[ `git status --porcelain` ]]; then
@@ -74,5 +78,6 @@ jobs:
       - name: Fail if unfixable violations exist
         if: env.has_unfixable == 'true'
         run: |
-          echo "❌ Unfixable SQLFluff violations remain. Please fix manually."
+          echo "❌ Unfixable SQLFluff violations could not be auto-fixed. 
+          echo "Please review the issues listed above and fix manually."
           exit 1

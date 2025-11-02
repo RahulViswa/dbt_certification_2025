@@ -24,14 +24,30 @@ jobs:
         with:
           python-version: "3.9"
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install SQLFluff
         run: |
           python -m pip install --upgrade pip
-          pip install sqlfluff
+          pip install "sqlfluff==3.1.0"
+
+      - name: Validate SQLFluff configuration
+        run: |
+          echo "Using SQLFluff version:"
+          sqlfluff --version
+          echo "Loaded configuration:"
+          sqlfluff config --show
 
       - name: Auto-fix SQLFluff issues
         run: |
-          sqlfluff fix models --dialect snowflake --force
+          sqlfluff fix models --dialect snowflake
+        continue-on-error: true  # Prevents workflow from failing even if no fixes are possible
 
       - name: Run SQLFluff lint
         run: |

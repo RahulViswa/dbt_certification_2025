@@ -24,7 +24,7 @@ order_values_joined as (
     select
         orders.*,
         order_totals.payment_status,
-        order_value_dollars
+        order_totals.order_value_dollars
     from orders
     left join order_totals on orders.order_id = order_totals.order_id
 )

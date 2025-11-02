@@ -51,6 +51,10 @@ models:
         +schema: finance
       marketing:
         +schema: marketing
+      legacy:
+        +schema: legacy
+      refactored:
+        +schema: refactored
     
   dbt_project_evaluator:
     +enabled: "{{ var('run_evaluator', 'false') | lower == 'true' | as_bool }}"

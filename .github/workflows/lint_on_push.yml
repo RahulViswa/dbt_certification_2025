@@ -41,8 +41,6 @@ jobs:
         run: |
           echo "Using SQLFluff version:"
           sqlfluff --version
-          echo "Loaded configuration:"
-          sqlfluff config --show
 
       - name: Auto-fix SQLFluff issues
         run: |

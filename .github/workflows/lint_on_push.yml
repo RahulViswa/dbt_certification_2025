@@ -78,6 +78,6 @@ jobs:
       - name: Fail if unfixable violations exist
         if: env.has_unfixable == 'true'
         run: |
-          echo "❌ Unfixable SQLFluff violations could not be auto-fixed. 
+          echo "❌ Unfixable SQLFluff violations could not be auto-fixed."
           echo "Please review the issues listed above and fix manually."
           exit 1

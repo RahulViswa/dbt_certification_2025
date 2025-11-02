@@ -30,45 +30,14 @@ jobs:
           pip install sqlfluff
 
       - name: Auto-fix SQLFluff issues
-        continue-on-error: true     # ✅ Prevent skipping next steps
         run: |
-          echo "🧹 Running SQLFluff Auto-Fix..."
-          sqlfluff fix models --dialect snowflake || true
+          sqlfluff fix models --dialect snowflake --force
 
-      - name: Run SQLFluff lint and detect unfixables
-        id: lint
-        continue-on-error: true
+      - name: Run SQLFluff lint
         run: |
-          echo "🔍 Running SQLFluff Lint..."
-          sqlfluff lint models --dialect snowflake --format human > lint_output.txt || true
+          sqlfluff lint models --dialect snowflake
 
-          echo ""
-          echo "=============================="
-          echo "✅ SQLFluff Lint Summary"
-          echo "=============================="
-          grep -E "^== " lint_output.txt | sed 's/^/📄 /' || true
-
-          echo ""
-          echo "------------------------------"
-          echo "⚠️  Checking for Unfixable Violations"
-          echo "------------------------------"
-
-          # Capture unfixable issues if any
-          grep -i -A5 "unfixable" lint_output.txt > unfixables.txt || true
-
-          if [[ -s unfixables.txt ]]; then
-            echo "has_unfixable=true" >> $GITHUB_ENV
-            echo ""
-            echo "❌ Unfixable Violations Found:"
-            echo "--------------------------------"
-            cat unfixables.txt
-          else
-            echo "🎉 No unfixable violations found!"
-            echo "has_unfixable=false" >> $GITHUB_ENV
-          fi
-
-      - name: Commit and push fixes
-        if: env.has_unfixable == 'false'
+      - name: Commit and push fixes (if any)
         run: |
           if [[ `git status --porcelain` ]]; then
             git config user.name "github-actions[bot]"
@@ -79,14 +48,3 @@ jobs:
           else
             echo "No fixes to commit."
           fi
-
-      - name: Show unfixable SQLFluff violations (before failing)
-        if: env.has_unfixable == 'true'
-        run: |
-          echo ""
-          echo "❌ Unfixable SQLFluff Violations Detected:"
-          echo "------------------------------------------"
-          cat unfixables.txt || echo "(No detailed output found)"
-          echo ""
-          echo "Please fix these issues manually before committing again."
-          exit 1

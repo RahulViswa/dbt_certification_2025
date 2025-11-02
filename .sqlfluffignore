@@ -1,0 +1,3 @@
+# .sqlfluffignore
+
+models/legacy/customer_orders.sql

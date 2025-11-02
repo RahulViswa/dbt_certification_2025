@@ -1,0 +1,5 @@
+== [models/marts/intermediate/int_orders.sql] FAIL
+L:  27 | P:   9 | RF02 | Unqualified reference 'order_value_dollars' found in
+                       | select with more than one referenced table/view.
+                       | [references.qualification]
+All Finished!

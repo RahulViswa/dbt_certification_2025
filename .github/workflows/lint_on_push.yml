@@ -30,13 +30,16 @@ jobs:
           pip install sqlfluff
 
       - name: Auto-fix SQLFluff issues
+        continue-on-error: true     # ✅ Prevents skipping next steps
         run: |
-          sqlfluff fix models --dialect snowflake --force
+          echo "🧹 Running SQLFluff Auto-Fix..."
+          sqlfluff fix models --dialect snowflake || true
 
       - name: Run SQLFluff lint and show unfixable violations
         id: lint
+        continue-on-error: true     # ✅ Even if lint finds issues, go on
         run: |
-          echo "🧹 Running SQLFluff lint..."
+          echo "🔍 Running SQLFluff Lint..."
           sqlfluff lint models --dialect snowflake --format human > lint_output.txt || true
 
           echo "=============================="
@@ -47,16 +50,16 @@ jobs:
           echo "⚠️  Unfixable Violations"
           echo "------------------------------"
 
-          # Show lines that remain FAIL (unfixable)
           if grep -q "FAIL" lint_output.txt; then
             grep "FAIL" lint_output.txt
-            echo "::set-output name=has_unfixable::true"
+            echo "has_unfixable=true" >> $GITHUB_ENV
           else
             echo "No unfixable violations found 🎉"
-            echo "::set-output name=has_unfixable::false"
+            echo "has_unfixable=false" >> $GITHUB_ENV
           fi
 
       - name: Commit and push fixes (if any)
+        if: env.has_unfixable == 'false'
         run: |
           if [[ `git status --porcelain` ]]; then
             git config user.name "github-actions[bot]"
@@ -67,3 +70,9 @@ jobs:
           else
             echo "No fixes to commit."
           fi
+
+      - name: Fail if unfixable violations exist
+        if: env.has_unfixable == 'true'
+        run: |
+          echo "❌ Unfixable SQLFluff violations remain. Please fix manually."
+          exit 1

@@ -75,9 +75,13 @@ jobs:
             echo "No fixes to commit."
           fi
 
-      - name: Fail if unfixable violations exist
+      - name: Show unfixable SQLFluff violations (before failing)
         if: env.has_unfixable == 'true'
         run: |
-          echo "❌ Unfixable SQLFluff violations could not be auto-fixed."
-          echo "Please review the issues listed above and fix manually."
+          echo ""
+          echo "❌ Unfixable SQLFluff Violations Detected:"
+          echo "------------------------------------------"
+          cat unfixables.txt || echo "(No detailed output found)"
+          echo ""
+          echo "Please fix these issues manually before committing again."
           exit 1

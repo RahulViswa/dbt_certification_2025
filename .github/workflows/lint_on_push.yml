@@ -55,7 +55,7 @@ jobs:
 
           # Show detailed unfixable violations
           if grep -q "L:" lint_output.txt; then
-            grep -E "L:[0-9]+ *|L[0-9]+" lint_output.txt | sed 's/^/❌ /'
+            grep -E "L:[0-9]+ *|L[0-9]+" lint_output.txt | sed 's/^/❌ /' | tee unfixables.txt
             echo "has_unfixable=true" >> $GITHUB_ENV
           else
             echo "🎉 No unfixable violations found!"

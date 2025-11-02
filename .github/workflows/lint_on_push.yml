@@ -33,9 +33,28 @@ jobs:
         run: |
           sqlfluff fix models --dialect snowflake --force
 
-      - name: Run SQLFluff lint
+      - name: Run SQLFluff lint and show unfixable violations
+        id: lint
         run: |
-          sqlfluff lint models --dialect snowflake
+          echo "🧹 Running SQLFluff lint..."
+          sqlfluff lint models --dialect snowflake --format human > lint_output.txt || true
+
+          echo "=============================="
+          echo "✅ SQLFluff Lint Summary"
+          echo "=============================="
+          grep -E "^== " lint_output.txt | sed 's/^/📄 /'
+          echo "------------------------------"
+          echo "⚠️  Unfixable Violations"
+          echo "------------------------------"
+
+          # Show lines that remain FAIL (unfixable)
+          if grep -q "FAIL" lint_output.txt; then
+            grep "FAIL" lint_output.txt
+            echo "::set-output name=has_unfixable::true"
+          else
+            echo "No unfixable violations found 🎉"
+            echo "::set-output name=has_unfixable::false"
+          fi
 
       - name: Commit and push fixes (if any)
         run: |

@@ -1,0 +1,14 @@
+default:
+  target: ci
+  outputs:
+    ci:
+      type: snowflake
+      account: dummy_account
+      user: dummy_user
+      password: dummy_password
+      role: dummy_role
+      warehouse: dummy_warehouse
+      database: dummy_database
+      schema: dummy_schema
+      threads: 1
+      client_session_keep_alive: False

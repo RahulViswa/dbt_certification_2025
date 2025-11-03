@@ -47,25 +47,6 @@ jobs:
         run: |
           dbt deps || echo "Skipping dbt deps if no packages.yml found!"
 
-      - name: Create dummy dbt profile
-        run: |
-          mkdir -p ~/.dbt
-          cat << 'EOF' > ~/.dbt/profiles.yml
-          default:
-            target: dev
-            outputs:
-              dev:
-                type: snowflake
-                account: dummy_account
-                user: dummy_user
-                password: dummy_password
-                role: dummy_role
-                warehouse: dummy_warehouse
-                database: dummy_database
-                schema: dummy_schema
-                threads: 1
-          EOF
-
       - name: Validate SQLFluff configuration
         run: |
           echo "Using SQLFluff version:"

@@ -13,6 +13,11 @@ jobs:
     name: Run SQLFluff Linter and Auto-Fix
     runs-on: ubuntu-latest
 
+    env:
+      DBT_STAGE: STAGE
+      DBT_ANALYTICS: ANALYTICS
+
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

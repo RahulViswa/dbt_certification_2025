@@ -51,10 +51,16 @@ models:
         +schema: finance
       marketing:
         +schema: marketing
-      legacy:
-        +schema: legacy
       refactored:
         +schema: refactored
+      intermediate:
+        +schema: intermediate
+
+    legacy:
+      +database: "{{ env_var('DBT_ANALYTICS') }}"
+      +materialized: 'table'
+      legacy:
+        +schema: legacy
     
   dbt_project_evaluator:
     +enabled: "{{ var('run_evaluator', 'false') | lower == 'true' | as_bool }}"

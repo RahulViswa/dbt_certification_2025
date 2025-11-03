@@ -1,9 +1,7 @@
 [sqlfluff]
 templater = dbt
 dialect = snowflake
-fail_on_db_connection = False
-disable_templating_error = True
 
 [sqlfluff:templater:dbt]
 project_dir = .
-profiles_dir = .github/.dbt
+profiles_dir = ~/.dbt

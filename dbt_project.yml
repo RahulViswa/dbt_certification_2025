@@ -43,6 +43,8 @@ models:
         +schema: jaffle_shop
       stripe:
         +schema: stripe
+      date:
+        +schema: date
 
     marts:
       +database: "{{ env_var('DBT_ANALYTICS') }}"
@@ -60,6 +62,11 @@ models:
       +database: "{{ env_var('DBT_ANALYTICS') }}"
       +materialized: 'table'
       +schema: legacy
+
+    python:
+      +database: "{{ env_var('DBT_ANALYTICS') }}"
+      +materialized: 'table'
+      +schema: python
     
   dbt_project_evaluator:
     +enabled: "{{ var('run_evaluator', 'false') | lower == 'true' | as_bool }}"

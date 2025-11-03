@@ -5,3 +5,4 @@ dialect = snowflake
 [sqlfluff:templater:dbt]
 project_dir = .
 profiles_dir = ~/.dbt
+fail_on_db_connection = False

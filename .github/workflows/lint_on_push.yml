@@ -44,6 +44,7 @@ jobs:
           pip install "sqlfluff==3.1.0"
           pip install sqlfluff-templater-dbt
           pip install dbt-snowflake
+          pip install dbt-duckdb
 
       - name: Install dbt packages
         run: |

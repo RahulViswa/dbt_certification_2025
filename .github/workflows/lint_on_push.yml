@@ -44,12 +44,12 @@ jobs:
 
       - name: Auto-fix SQLFluff issues
         run: |
-          sqlfluff fix models --dialect snowflake
+          sqlfluff fix models --dialect snowflake --templater dbt
         continue-on-error: true  # Prevents workflow from failing even if no fixes are possible
 
       - name: Run SQLFluff lint
         run: |
-          sqlfluff lint models --dialect snowflake
+          sqlfluff lint models --dialect snowflake --templater dbt
 
       - name: Commit and push fixes (if any)
         run: |

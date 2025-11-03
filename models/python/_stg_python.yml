@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: is_holiday_2025
+    columns:
+      - name: date_day
+        data_tests:
+          - relationships:
+              field: date_day
+              to: ref('stg_date__date_spine')
+      
+      - name: is_holiday
+        data_tests:
+          - accepted_values:
+              values:
+                - true
+                - false

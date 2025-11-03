@@ -16,9 +16,6 @@ jobs:
     env:
       DBT_STAGE: STAGE
       DBT_ANALYTICS: ANALYTICS
-      DBT_ALLOW_DATABASE_CONNECTIONS: "false"
-      DBT_OFFLINE_MODE: "true"
-
 
     steps:
       - name: Checkout repository
@@ -67,11 +64,6 @@ jobs:
                 database: dummy_database
                 schema: dummy_schema
                 threads: 1
-                connect_retries: 0
-                retry_all: False
-                retries: 0
-                client_session_keep_alive: False
-                query_tag: sqlfluff_lint
           EOF
 
       - name: Validate SQLFluff configuration

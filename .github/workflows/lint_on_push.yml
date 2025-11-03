@@ -44,6 +44,10 @@ jobs:
           pip install sqlfluff-templater-dbt
           pip install dbt-snowflake
 
+      - name: Install dbt packages
+        run: |
+          dbt deps || echo "Skipping dbt deps if no packages.yml found!"
+
       - name: Create dummy dbt profile
         run: |
           mkdir -p ~/.dbt

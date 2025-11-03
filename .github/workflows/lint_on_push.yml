@@ -16,6 +16,8 @@ jobs:
     env:
       DBT_STAGE: STAGE
       DBT_ANALYTICS: ANALYTICS
+      DBT_PROFILES_DIR: .github/.dbt
+      DBT_TARGET: dev
 
     steps:
       - name: Checkout repository
@@ -36,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install SQLFluff
+      - name: Install SQLFluff + dbt
         run: |
           python -m pip install --upgrade pip
           pip install "sqlfluff==3.1.0"

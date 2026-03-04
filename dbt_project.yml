@@ -44,6 +44,11 @@ models:
       stripe:
         +schema: stripe
 
+    intermediate:
+      +database: "{{ env_var('DBT_INT') }}"
+      +materialized: 'table'
+      +schema: prep
+
     marts:
       +database: "{{ env_var('DBT_ANALYTICS') }}"
       +materialized: 'table'

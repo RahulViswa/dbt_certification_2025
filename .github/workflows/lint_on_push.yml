@@ -16,6 +16,7 @@ jobs:
     env:
       DBT_STAGE: STAGE
       DBT_ANALYTICS: ANALYTICS
+      DBT_INT: INTERMEDIATE
 
     steps:
       - name: Checkout repository

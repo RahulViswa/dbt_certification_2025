@@ -55,10 +55,3 @@ models:
 seeds:
   +database: "{{ env_var('DBT_STAGE') }}"
   +schema: misc
-  dbt_project_evaluator:
-    dbt_project_evaluator_exceptions:
-      +enabled: false
-    
-flags:
-  require_generic_test_arguments_property: true
-  static_analysis: unsafe

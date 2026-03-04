@@ -2,18 +2,8 @@ with orders as (
     select * from {{ ref ('stg_jaffle_shop__orders' ) }}
 ),
 
-payments as (
-    select * from {{ ref ('int_order__payments') }}
-),
-
 order_payments as (
-    select
-        order_id,
-        sum(case when payment_status = 'success' then payment_amount end)
-            as amount
-
-    from payments
-    group by 1
+    select * from {{ ref ('int_order__payments') }}
 ),
 
 final as (

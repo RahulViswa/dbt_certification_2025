@@ -13,7 +13,7 @@ order_payments as (
                 then payment_amount
         end) as amount
     from payments
-    group by all
+    group by 1
 
 )
 

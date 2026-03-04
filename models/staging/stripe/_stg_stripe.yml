@@ -9,12 +9,3 @@ models:
         data_tests:
           - unique
           - not_null
-
-  - name: stg_stripe__exemplar_payments
-    description: The grain of this table is one unique payment per row.
-    columns:
-      - name: payment_id
-        description: The primary key for the payments table.
-        data_tests:
-          - unique
-          - not_null

@@ -4,6 +4,7 @@ with payments as (
 
 ),
 
+-- this is a test comments
 order_payments as (
 
     select
